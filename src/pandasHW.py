@@ -1,67 +1,24 @@
 """
-hello.py
+pandasHW.py
 ====================================
-This is an example file with correct docstring examples
+This is a web scraper that will return information from weather reports and format it using pandas
 
-| Author: Seth McNeill
-| Date: 2025 September 07
+| Author: Abraham Fisher
+| Date: 2026 April 18
 """
+import requests
+import re
+import pandas as pd
+import numpy as np
 
-class SayHello:
-    """
-    Base class example
-    
-    This class provides an example to work from
-    
-    Parameters
-    ----------
-    name : str
-        The user's name
-    
-    Attributes
-    ----------
-    name : str
-        The user's name
-        
-    Examples
-    --------
-    >>> hello = SayHello("Bob")
-    >>> hello.greet(', welcome!')
-    Hello Bob, welcome!
-    """
-    
-    def __init__(self, name):
-        """
-        Initialize a new SayHello instance.
-        
-        Parameters
-        ----------
-        name : str
-            The user's name
-        """
-        self.name = name
-   
-    def greet(self, extraText):
-        """
-        Greets self.name and adds extraText to the output.
-        
-        Parameters
-        ----------
-        extraText : str
-            Text to add after the hello username
-            
-        Returns
-        -------
-        int
-            An integer as an example of returning a value
-        """
-        print(f'Hello {self.name}{extraText}')
-        return len(self.name)
+def main():
 
+    response = requests.get("https://forecast.weather.gov/obslocal.php?warnzone=IAZ031&local_place=Sioux%20City%20IA&zoneid=CDT&offset=18000")
+    response.raise_for_status() # check for errors
+    myhtml = response.text;
 
 if __name__ == '__main__':
     """Runs if file called as script as opposed to being imported as a library
     """
-    bob = SayHello('Bob')
-    bobLen = bob.greet(', welcome!')
-    print(bobLen)
+    main();
+
