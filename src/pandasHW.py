@@ -31,11 +31,20 @@ def main():
             "Dew": int(match.group("Dew")),
             "Humidity": int(match.group("Humidity"))
         }
-        data.append(row)
+        data.append(row);
 
     df = pd.DataFrame(data)
-
-    print(df)
+    
+    summary = pd.DataFrame({
+        "Mean": df.mean(),
+        "Minimum": df.min(),
+        "Maximum": df.max(),
+        "Standard Deviation": df.std(),
+        "Median": df.median(),
+        "Mode": df.mode().iloc[0]
+    })
+    print(summary)
+    
 
 if __name__ == '__main__':
     """Runs if file called as script as opposed to being imported as a library
