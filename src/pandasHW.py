@@ -7,7 +7,6 @@ This is a web scraper that will return information from weather reports and form
 | Date: 2026 April 18
 """
 import requests
-import regex as re
 import re
 import pandas as pd
 import numpy as np
@@ -21,15 +20,22 @@ def main():
     print(f'Total Characters: {len(myhtml)}')
 
     # Checks odd and even rows for the 4th column which holds the number for the temp
-    odd_temps = re.findall(r'<tr class="odd">\s*<td class="obs-link">.*?</td><td class="time">.*?</td><td class="wx">.*?</td><td>(\d+)</td><td>.*?</td><td>.*?</td><td>.*?</td><td>.*?</td></tr>', myhtml);
-    even_temps = re.findall(r'<tr class="even">\s*<td class="obs-link">.*?</td><td class="time">.*?</td><td class="wx">.*?</td><td>(\d+)</td><td>.*?</td><td>.*?</td><td>.*?</td><td>.*?</td></tr>', myhtml);
-    #changes each value from a string to an int
-    odd_temps = [int(t) for t in odd_temps]
-    even_temps = [int(t) for t in even_temps]
-    #combines the lists
-    temps = odd_temps + even_temps;
+    values = r'<td>(?P<Temp>\d+)</td>[\s\r\n]+<td>(?P<Dew>\d+)</td>[\s\r\n]+<td>(?P<Humidity>\d+)</td>[\s\r\n]+'
+    matches = re.finditer(values, myhtml)
 
-    print(f'Total Temps: {temps}')
+    data = []
+
+    for match in matches:
+        row = {
+            "Temp": int(match.group("Temp")),
+            "Dew": int(match.group("Dew")),
+            "Humidity": int(match.group("Humidity"))
+        }
+        data.append(row)
+
+    df = pd.DataFrame(data)
+
+    print(df)
 
 if __name__ == '__main__':
     """Runs if file called as script as opposed to being imported as a library
