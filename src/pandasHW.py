@@ -9,7 +9,6 @@ This is a web scraper that will return information from weather reports and form
 import requests
 import re
 import pandas as pd
-import numpy as np
 
 def main():
 
